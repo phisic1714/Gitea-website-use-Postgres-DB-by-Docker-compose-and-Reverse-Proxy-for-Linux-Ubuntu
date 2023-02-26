@@ -1,2 +1,2 @@
 # swarm01
-kkkkk j
+Nginx Nodejs Redis
