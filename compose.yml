@@ -1,25 +1,66 @@
+version: '3.3'
 services:
-  redis:
-    image: 'redislabs/redismod'
-    ports:
-      - '6379:6379'
-  web1:
-    restart: on-failure
-    build: ./web
-    hostname: web1
-    ports:
-      - '81:5000'
-  web2:
-    restart: on-failure
-    build: ./web
-    hostname: web2
-    ports:
-      - '82:5000'
-  nginx:
-    build: ./nginx
-    ports:
-    - '80:80'
-    depends_on:
-    - web1
-    - web2
+  gitea:
+    image: gitea/gitea:latest
+    networks:
+     - traefik-public
+    environment:
+      - DB_TYPE=postgres
+      - DB_HOST=db:5432
+      - DB_NAME=gitea
+      - DB_USER=gitea
+      - DB_PASSWD=gitea
+      - PORT=3000
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - git_data:/data
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 3
+      labels:
+        traefik.constraint-label: traefik-public
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.${APPNAME}-http.entrypoints: http
+        traefik.http.routers.${APPNAME}-http.rule: Host(`${APPNAME}.xops.ipv9.me`)
+        traefik.http.services.${APPNAME}.loadbalancer.server.port: '3000'
+      resources:
+        reservations:
+          cpus: '0.1'
+          memory: 10M
+        limits:
+          cpus: '0.4'
+          memory: 250M
+  db:
+    image: postgres:alpine
+    environment:
+      - POSTGRES_USER=gitea
+      - POSTGRES_PASSWORD=gitea
+      - POSTGRES_DB=gitea
+    restart: always
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    expose:
+      labels:
+        traefik.constraint-label: traefik-public
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.${APPNAME}-http.entrypoints: http
+        traefik.http.routers.${APPNAME}-http.rule: Host(`${APPNAME}.xops.ipv9.me`)
+        traefik.http.services.${APPNAME}.loadbalancer.server.port: '5432'
+      resources:
+        reservations:
+          cpus: '0.1'
+          memory: 10M
+        limits:
+          cpus: '0.4'
+          memory: 250M
+volumes:
+  db_data:
+  git_data:
 
+networks:
+ traefik-public:
+    external: true
