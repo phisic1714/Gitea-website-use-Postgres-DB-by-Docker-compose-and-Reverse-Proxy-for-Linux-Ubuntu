@@ -43,20 +43,7 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     expose:
-      labels:
-        traefik.constraint-label: traefik-public
-        traefik.docker.network: traefik-public
-        traefik.enable: 'true'
-        traefik.http.routers.${APPNAME}-http.entrypoints: http
-        traefik.http.routers.${APPNAME}-http.rule: Host(`${APPNAME}.xops.ipv9.me`)
-        traefik.http.services.${APPNAME}.loadbalancer.server.port: '5432'
-      resources:
-        reservations:
-          cpus: '0.1'
-          memory: 10M
-        limits:
-          cpus: '0.4'
-          memory: 250M
+      - 5432
 volumes:
   db_data:
   git_data:
