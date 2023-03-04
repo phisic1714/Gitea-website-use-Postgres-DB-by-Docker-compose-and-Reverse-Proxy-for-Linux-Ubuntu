@@ -93,24 +93,24 @@ I'll create compose file to command to create service and make reverse proxy. (�
 
      - Use Portainer follow step below (ใช้ portainer โดยทำตามนี้)
           - open portainer select **Stack menu** and select **Add Stack** (เข้า portainer เลือก **เมนู stack** และ **เลือก Add Stack**)
-          ![](img\openstack.png)
+          ![f](img\openstack.png)
           - Copy Scripts inside compose.yml file insert them in **Web editor** Text box Entry Stack name and set your enviroment variable "APPNAME" or you can change by yourself in scripts and then deploy (คัดลอก Scripts ภายใน compose.yml file ใส่ทั้งหมดลงใน กล่องข้อความ **Web editor** ตั้งชื่อ Stack และ ตั้ง ค่าตัวแปรสภาพแวดล้อม "APPNAME" หรือ คุณสามารถ แก้ไขมันเองได้ ใน scripts จากนั้น ทำการ deploy)
-          ![](img\addscripts.png)
+          ![f](img\addscripts.png)
 
 ## Result (ผลลัพธ์)
 ---
 1. In Stack menu you can see your stack after deploy  that appear. (ในเมนู Stack คุณจะเห็น stack หลังจากที่คุณ deploy แล้วจะแสดงขึ้นมา)
-![](img\stackresult.png)
+![f](img\stackresult.png)
 2. Inside Stack you can see status and detail of service. all of them depending on compose.yml scripts that you wrote. for my example i have two service that i set in compose.yml and now in portainer service it's shown me two service too. (ข้างใน Stack คุณสามารถเห็นการแสดง สถานะ และรายละเอียดของ Service ที่ทำงาน ทั้งหมดจะขึ้นอยู่กับ compose.yml scripts ที่เราเขียนไว้ ยกตัวอย่างสำหรับผม ผมมี 2 service ซึ่ง ตั้งไว้ใน compose.yml และใน portainer ตอนนี้มันก็แสดงให้ผมเห็น 2 Services เช่นกัน)
 
-![](img\services.png)
+![f](img\services.png)
 
 3. In Image Menu you can see your Image and Tag from this menu. the tag of image will pulling gitea from Docker hub.(ใน เมนู Image คุณสามารถเห็น Image ของคุณ และ Tag จาก เมนูนี้ โดย Tag ของ image gitea จะดึงมาจาก Docker hub โดยตรง)
 4.  This's my URL after Create Reverse Proxy and Deploy compose file. The result will shown Gitea Website (นี่คือ URL ของผม ที่หลังจากการสร้าง Reverse Proxy และ Deploy compose file ผลลัพธ์จะแสดง Gitea Website)
 
      https://peegitea.xops.ipv9.me
 
-     ![](img\webresult.png)
+     ![f](img\webresult.png)
 
 
 In my opinion, Inside image they contain Script command to run their website code such as NodeJS command and compose file will pulling them to operate their website by their image.(ในความเห็นผม ภายใน image พวกเขาได้ใส่ Script คำสั่งเพื่อ run เว็ปไซต์ code ของพวกเขาเช่นพวกคำสั่ง NodeJS และ compose file จะดึง image จากพวกเขามาให้เว็ปไซต์ทำงานโดย Image ของพวกเขา)
