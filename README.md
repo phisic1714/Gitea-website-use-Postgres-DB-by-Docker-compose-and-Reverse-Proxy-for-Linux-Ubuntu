@@ -5,21 +5,37 @@ Hi, My name is Peerapat. I'll will show you how to open **Gitea website use Post
 
 |**Contents (สารบัญ)**|
 | :-: |
-| [Preparation (การเตรียมพร้อม)](#preparation-การเตรียมพร้อม) |
-|[Step 1 : compose.yml file (ขั้นตอนที่ 1 : ไฟล์ compose.yml)](#step-1--composeyml-file-ขั้นตอนที่-1--ไฟล์-composeyml)|
-|[Result (ผลลัพธ์)](#result-ผลลัพธ์)|
+| [Preparation (การเตรียมพร้อม)](#preparation) |
+|[Step 1 : compose.yml file (ขั้นตอนที่ 1 : ไฟล์ compose.yml)](#step-1--composeyml-file)|
+|[Result (ผลลัพธ์)](#result)|
+|[Reference (อ้างอิง)](#reference)|
 
-## Preparation (การเตรียมพร้อม)
-1. [Install Docker Engine. (ติดตั้ง Docker Engine)](https://github.com/pitimon/dockerswarm-inhoure)
-2. [Create Portainer CE with Docker Swarm Service easier to compose without command line and share Node to be able to work the same. (สร้าง Portainer CE กับ Docker Swarm Service เพื่อง่ายต่อการ compose โดยไม่ต้องใช้ command line และสามารถแบ่ง Node ให้สามารถทำงานเหมือนกันได้)](https://github.com/pitimon/dockerswarm-inhoure)
-3. [Create Traefik Service for allow to use Reverse Proxy in compose file. (สร้าง Traefik Service สำหรับให้ใช้ Reverse Proxy ใน compose ไฟล์)](https://github.com/pitimon/dockerswarm-inhoure/tree/main/ep03-traefik) 
-4. Create Network name webproxy by this commande below (สร้าง Network ชื่อ Webproxy จากคำสั่งนี้)
+## Preparation 
+(การเตรียมพร้อม)
+
+---
+1. [Install Docker Engine.](https://github.com/pitimon/dockerswarm-inhoure) 
+
+     (ติดตั้ง Docker Engine)
+2. [Create Portainer CE with Docker Swarm Service easier to compose without command line and share Node to be able to work the same.](https://github.com/pitimon/dockerswarm-inhoure) 
+
+     (สร้าง Portainer CE กับ Docker Swarm Service เพื่อง่ายต่อการ compose โดยไม่ต้องใช้ command line และสามารถแบ่ง Node ให้สามารถทำงานเหมือนกันได้)
+3. [Create Traefik Service for allow to use Reverse Proxy in compose file.](https://github.com/pitimon/dockerswarm-inhoure/tree/main/ep03-traefik)  
+(สร้าง Traefik Service สำหรับให้ใช้ Reverse Proxy ใน compose ไฟล์)
+4. Create Network name webproxy by this commande below      
+(สร้าง Network ชื่อ Webproxy จากคำสั่งนี้)
 
           docker network create -d overlay --attachable webproxy
-## Step 1 : compose.yml file (ขั้นตอนที่ 1 : ไฟล์ compose.yml)
+## Step 1 : compose.yml file 
+(ขั้นตอนที่ 1 : ไฟล์ compose.yml)
+
 ---
-I'll create compose file to command to create service and make reverse proxy. (ผมจะสร้าง compose file เพื่อเป็นคำสั่งในการสร้าง service และทำ reverse proxy)
-1. Create compose file you can use compose.yml file from this repository or create by your own but I'll explain my script inside compose.yml. (สร้างไฟล์ compose คุณสามารถใช้ compose.yml file จาก repository นี้ หรือสร้างของคุณเอง แต่ผมจะอธิบาย script ข้างใน compose.yml)
+I'll create compose file to command to create service and make reverse proxy. 
+
+(ผมจะสร้าง compose file เพื่อเป็นคำสั่งในการสร้าง service และทำ reverse proxy)
+1. Create compose file you can use compose.yml file from this repository or create by your own but I'll explain my script inside compose.yml. 
+
+     (สร้างไฟล์ compose คุณสามารถใช้ compose.yml file จาก repository นี้ หรือสร้างของคุณเอง แต่ผมจะอธิบาย script ข้างใน compose.yml)
      <details>
      <summary>Clicke me!!</summary>
 
@@ -80,44 +96,72 @@ I'll create compose file to command to create service and make reverse proxy. (�
      ```
      </details>
 
-     from my Scripts you can see this variable. (คุณเห็นตัวแปรจากที่ผมเขียนตัวนึงตามนี้)
+     from my Scripts you can see this variable.
+     
+      (คุณเห็นตัวแปรจากที่ผมเขียนตัวนึงตามนี้)
 
           ${APPNAME}
-     You can Edit them for your own or create .env file to setting value for this variable. (คุณสามารถแก้ไขให้เหมาะสมกับคุณ หรือ สร้างไฟล์ .env เพื่อตั้งค่าสำหรับตัวแปรที่กล่าวไว้)
+     You can Edit them for your own or create .env file to setting value for this variable.
+     
+      (คุณสามารถแก้ไขให้เหมาะสมกับคุณ หรือ สร้างไฟล์ .env เพื่อตั้งค่าสำหรับตัวแปรที่กล่าวไว้)
 
-2. Compose Up this compose.yml file to stack you can use this 2 optional solution (ทำการ Compose Up compose.yml file นี้ไปยัง stack โดยสามารภเลือกทำได้ 2 วิธีนี้)
+2. Compose Up this compose.yml file to stack you can use this 2 optional solution 
 
-     - Use command line below (ใช้คำสั่งตามนี้)
+     (ทำการ Compose Up compose.yml file นี้ไปยัง stack โดยสามารภเลือกทำได้ 2 วิธีนี้)
+
+     - Use command line below 
+     
+          (ใช้คำสั่งตามนี้)
 
                docker stack deploy -c compose.yml gitea
 
-     - Use Portainer follow step below (ใช้ portainer โดยทำตามนี้)
-          - open portainer select **Stack menu** and select **Add Stack** (เข้า portainer เลือก **เมนู stack** และ **เลือก Add Stack**)
-          ![f](img\openstack.png)
-          - Copy Scripts inside compose.yml file insert them in **Web editor** Text box Entry Stack name and set your enviroment variable "APPNAME" or you can change by yourself in scripts and then deploy (คัดลอก Scripts ภายใน compose.yml file ใส่ทั้งหมดลงใน กล่องข้อความ **Web editor** ตั้งชื่อ Stack และ ตั้ง ค่าตัวแปรสภาพแวดล้อม "APPNAME" หรือ คุณสามารถ แก้ไขมันเองได้ ใน scripts จากนั้น ทำการ deploy)
-          ![f](img\addscripts.png)
+     - Use Portainer follow step below 
+     
+          (ใช้ portainer โดยทำตามนี้)
+          - open portainer select **Stack menu** and select **Add Stack** 
+          
+               (เข้า portainer เลือก **เมนู stack** และ **เลือก Add Stack**)
+          ![f](img/openstack.png)
+          - Copy Scripts inside compose.yml file insert them in **Web editor** Text box Entry Stack name and set your enviroment variable "APPNAME" or you can change by yourself in scripts and then deploy 
+          
+               (คัดลอก Scripts ภายใน compose.yml file ใส่ทั้งหมดลงใน กล่องข้อความ **Web editor** ตั้งชื่อ Stack และ ตั้ง ค่าตัวแปรสภาพแวดล้อม "APPNAME" หรือ คุณสามารถ แก้ไขมันเองได้ ใน scripts จากนั้น ทำการ deploy)
+          ![f](img/addscripts.png)
 
-## Result (ผลลัพธ์)
+## Result 
+(ผลลัพธ์)
+
 ---
-1. In Stack menu you can see your stack after deploy  that appear. (ในเมนู Stack คุณจะเห็น stack หลังจากที่คุณ deploy แล้วจะแสดงขึ้นมา)
-![f](img\stackresult.png)
-2. Inside Stack you can see status and detail of service. all of them depending on compose.yml scripts that you wrote. for my example i have two service that i set in compose.yml and now in portainer service it's shown me two service too. (ข้างใน Stack คุณสามารถเห็นการแสดง สถานะ และรายละเอียดของ Service ที่ทำงาน ทั้งหมดจะขึ้นอยู่กับ compose.yml scripts ที่เราเขียนไว้ ยกตัวอย่างสำหรับผม ผมมี 2 service ซึ่ง ตั้งไว้ใน compose.yml และใน portainer ตอนนี้มันก็แสดงให้ผมเห็น 2 Services เช่นกัน)
+1. In Stack menu you can see your stack after deploy  that appear. 
 
-![f](img\services.png)
+     (ในเมนู Stack คุณจะเห็น stack หลังจากที่คุณ deploy แล้วจะแสดงขึ้นมา)
+![f](img/stackresult.png)
+2. Inside Stack you can see status and detail of service. all of them depending on compose.yml scripts that you wrote. for my example i have two service that i set in compose.yml and now in portainer service it's shown me two service too. 
 
-3. In Image Menu you can see your Image and Tag from this menu. the tag of image will pulling gitea from Docker hub.(ใน เมนู Image คุณสามารถเห็น Image ของคุณ และ Tag จาก เมนูนี้ โดย Tag ของ image gitea จะดึงมาจาก Docker hub โดยตรง)
-4.  This's my URL after Create Reverse Proxy and Deploy compose file. The result will shown Gitea Website (นี่คือ URL ของผม ที่หลังจากการสร้าง Reverse Proxy และ Deploy compose file ผลลัพธ์จะแสดง Gitea Website)
+     (ข้างใน Stack คุณสามารถเห็นการแสดง สถานะ และรายละเอียดของ Service ที่ทำงาน ทั้งหมดจะขึ้นอยู่กับ compose.yml scripts ที่เราเขียนไว้ ยกตัวอย่างสำหรับผม ผมมี 2 service ซึ่ง ตั้งไว้ใน compose.yml และใน portainer ตอนนี้มันก็แสดงให้ผมเห็น 2 Services เช่นกัน)
+
+![f](img/services.png)
+
+3. In Image Menu you can see your Image and Tag from this menu. the tag of image will pulling gitea from Docker hub.
+
+     (ใน เมนู Image คุณสามารถเห็น Image ของคุณ และ Tag จาก เมนูนี้ โดย Tag ของ image gitea จะดึงมาจาก Docker hub โดยตรง)
+4.  This's my URL after Create Reverse Proxy and Deploy compose file. The result will shown Gitea Website 
+
+     (นี่คือ URL ของผม ที่หลังจากการสร้าง Reverse Proxy และ Deploy compose file ผลลัพธ์จะแสดง Gitea Website)
 
      https://peegitea.xops.ipv9.me
 
-     ![f](img\webresult.png)
+     ![f](img/webresult.png)
 
 
-In my opinion, Inside image they contain Script command to run their website code such as NodeJS command and compose file will pulling them to operate their website by their image.(ในความเห็นผม ภายใน image พวกเขาได้ใส่ Script คำสั่งเพื่อ run เว็ปไซต์ code ของพวกเขาเช่นพวกคำสั่ง NodeJS และ compose file จะดึง image จากพวกเขามาให้เว็ปไซต์ทำงานโดย Image ของพวกเขา)
+In my opinion, Inside image they contain Script command to run their website code such as NodeJS command and compose file will pulling them to operate their website by their image.
+
+(ในความเห็นผม ภายใน image พวกเขาได้ใส่ Script คำสั่งเพื่อ run เว็ปไซต์ code ของพวกเขาเช่นพวกคำสั่ง NodeJS และ compose file จะดึง image จากพวกเขามาให้เว็ปไซต์ทำงานโดย Image ของพวกเขา)
 
 
 -----
-### Reference (อ้างอิง)
+### Reference 
+(อ้างอิง)
+
 ---
 - Source Repository 
      - https://github.com/docker/awesome-compose/tree/master/gitea-postgres
