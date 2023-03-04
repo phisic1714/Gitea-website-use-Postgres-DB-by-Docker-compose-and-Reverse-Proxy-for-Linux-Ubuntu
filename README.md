@@ -144,6 +144,8 @@ I'll create compose file to command to create service and make reverse proxy.
 3. In Image Menu you can see your Image and Tag from this menu. the tag of image will pulling gitea from Docker hub.
 
      (ใน เมนู Image คุณสามารถเห็น Image ของคุณ และ Tag จาก เมนูนี้ โดย Tag ของ image gitea จะดึงมาจาก Docker hub โดยตรง)
+
+     ![f](img/image.png)
 4.  This's my URL after Create Reverse Proxy and Deploy compose file. The result will shown Gitea Website 
 
      (นี่คือ URL ของผม ที่หลังจากการสร้าง Reverse Proxy และ Deploy compose file ผลลัพธ์จะแสดง Gitea Website)
@@ -153,9 +155,9 @@ I'll create compose file to command to create service and make reverse proxy.
      ![f](img/webresult.png)
 
 
-In my opinion, Inside image they contain Script command to run their website code such as NodeJS command and compose file will pulling them to operate their website by their image.
+In my opinion, Inside image they contain Script command to run their website code such as NodeJS command and compose file will pulling them to operate their website by their image and make Reverse Proxy to easier for open web app without declare port on url and set your own Domain name.
 
-(ในความเห็นผม ภายใน image พวกเขาได้ใส่ Script คำสั่งเพื่อ run เว็ปไซต์ code ของพวกเขาเช่นพวกคำสั่ง NodeJS และ compose file จะดึง image จากพวกเขามาให้เว็ปไซต์ทำงานโดย Image ของพวกเขา)
+(ในความเห็นผม ภายใน image พวกเขาได้ใส่ Script คำสั่งเพื่อ run เว็ปไซต์ code ของพวกเขาเช่นพวกคำสั่ง NodeJS และ compose file จะดึง image จากพวกเขามาให้เว็ปไซต์ทำงานโดย Image ของพวกเขา และ ทำ Reverse Proxy เพื่อง่ายต่อการเข้า web app โดยไม่ต้อง ประกาศ port ลงบน url และ ตั้งค่า Domain name ให้ตัวเอง)
 
 
 -----
