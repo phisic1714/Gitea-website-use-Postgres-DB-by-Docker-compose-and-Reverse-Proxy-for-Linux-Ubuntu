@@ -1,5 +1,5 @@
 # Gitea website use Postgres DB by Docker compose and Reverse Proxy for Linux Ubuntu. (Gitea website ใช้ Postgres DB โดย Docker compose และ Reverse Proxy สำหรับ Linux Ubuntu)
-
+![f](img/logos.jpg)
 Hi, My name is Peerapat. I'll will show you how to open **Gitea website use Postgres DB** by Docker compose and make Reverse Proxy to create your Domain name for **Gitea website**.         
 (สวัสดีครับ ผมชื่อ พีรพัฒน์ ผมจะมาแสดงวิธีการเปิด **Gitea website ใช้ Postgres** โดย Docker compose และทำ Reverse Proxy เพื่อสร้าง ชื่อโดเมน ของคุณเองสำหรับ **Gitea website**)
 
@@ -11,7 +11,7 @@ Hi, My name is Peerapat. I'll will show you how to open **Gitea website use Post
 |[Reference (อ้างอิง)](#reference)|
 
 ## Preparation 
-(การเตรียมพร้อม)
+(การเตรียมพร้อม) [top⬆️](#gitea-website-use-postgres-db-by-docker-compose-and-reverse-proxy-for-linux-ubuntu-gitea-website-ใช้-postgres-db-โดย-docker-compose-และ-reverse-proxy-สำหรับ-linux-ubuntu)
 
 ---
 1. [Install Docker Engine.](https://github.com/pitimon/dockerswarm-inhoure) 
@@ -27,7 +27,7 @@ Hi, My name is Peerapat. I'll will show you how to open **Gitea website use Post
 
           docker network create -d overlay --attachable webproxy
 ## Step 1 : compose.yml file 
-(ขั้นตอนที่ 1 : ไฟล์ compose.yml)
+(ขั้นตอนที่ 1 : ไฟล์ compose.yml) [top⬆️](#gitea-website-use-postgres-db-by-docker-compose-and-reverse-proxy-for-linux-ubuntu-gitea-website-ใช้-postgres-db-โดย-docker-compose-และ-reverse-proxy-สำหรับ-linux-ubuntu)
 
 ---
 I'll create compose file to command to create service and make reverse proxy. 
@@ -40,59 +40,112 @@ I'll create compose file to command to create service and make reverse proxy.
      <summary>Clicke me!!</summary>
 
      ```ruby
-     version: '3.3' # Declare compose version(ประกาศ compose version)
-     services: # Declare to create services (ประกาศที่จะสร้าง services)
-     gitea: # Declare gitea services (ประกาศ gitea services)
-     image: gitea/gitea:latest # Pull tag of gitea latest version (ดึง tag ของ gitea version ล่าสุด)
-     networks: # Declare networks for gitea services (ประกาศ networks ที่จะใช้สำหรับ gitea) 
-          - webproxy # network name webproxy (network ชื่อ webproxy)
-     environment: # Declare environment (ประกาศตัวแปรสภาพแวดล้อมของ Services)
-          - DB_TYPE=postgres # Set Database type is postgres (ใช้ Database ชนิดคือ postgres)
-          - DB_HOST=db:5432 # Set Hostname db from db service and port 5432 (ใช้ชื่อ Host ว่า db จาก db service และ ใช้ port 5432)
-          - DB_NAME=gitea # Set Database name is gitea (ตั้งชื่อ Database ว่า gitea)
-          - DB_USER=gitea # Set Database username is gitea (ตั้ง username ว่า gitea)
-          - DB_PASSWD=gitea # Set Database password is gitea (ตั้ง password ว่า gitea)
-          - PORT=3000 # Set gitea use port 3000 (ตั้งให้ gitea ใช้ port 3000)
-     restart: always # Set restart service always(ตั้งให้ restart service ตลอดเวลา)
-     volumes: # Declare volumes tag (ประกาศที่จะตั้ง tag ให้ volumes)
-          - /var/run/docker.sock:/var/run/docker.sock # Create volume tag Docker socket path (สร้าง tag volume สำหรับที่อยู่ Docker socket)
-          - git_data:/data  # Create volume tag for git data (สร้าง tag volume สำหรับที่อยู่ git data)
-     logging: # Create logging (สร้างการเก็บ log)
-          driver: json-file # Declare driver for logging type json (ประกาศการเก็บ log แบบ json)
-     deploy: # Declare deploy (ประกาศ การ Deploy)
-          replicas: 1 # set 1 replicas (ตั้งการทำ deploy แค่ 1 ครั้ง)
-          labels: # Declare labels to create Reverse Proxy (ประกาศที่จะสร้าง label สำหรับทำ Revers Proxy)
-          - traefik.docker.network=webproxy # Set network for Traefik (ตั้ง network สำหรับ Traefik)
-          - traefik.enable=true # Enable Traefik (เปิดใช้ Traefik)
-          - traefik.http.routers.${APPNAME}-https.entrypoints=websecure # Set Entrypoint (ตั้งการเริ่มต้นประมวลผล)
-          - traefik.http.routers.${APPNAME}-https.rule=Host("${APPNAME}.xops.ipv9.me") # Set Hostdomain for open gitea website (ตั้ง Hostdomain สำหรับเข้าใช้ gitea website)
-          - traefik.http.services.${APPNAME}.loadbalancer.server.port=3000 # Set port for loadbalance (ตั้ง Port สำหรับทำ loadbalance)
-          resources: # Declare resources for deploy (ประกาศทรัพยากรสำหรับการ deploy)
-          reservations: # Declare resources reservations (ประกาศการจองทรัพยากร) 
-               cpus: '0.1' # Use CPU 1 Core (ใช้ CPU 1 Core)
-               memory: 10M # Use Memory 10 Megabyte (ใช้หน่วยความจำ 10 Megabyte)
-          limits: # Declare resources limits (ประกาศการจำกัดทรัพยากร)
-               cpus: '0.4' # Limit CPU 4 Core (จำกัด CPU 1 Core)
-               memory: 250M # Limit Memory 250 Megabyte (จำกัดหน่วยความจำ 250 Megabyte)
-     db: # Declare db services (ประกาศ db services) 
-     image: postgres:alpine # Pull tag of postgres alpine version (ดึง postgres ของ gitea version alpine) 
-     networks: # Declare networks for db services (ประกาศ networks ที่จะใช้สำหรับ db) 
-          - webproxy # network name webproxy (network ชื่อ webproxy)
-     environment: # Declare environment (ประกาศตัวแปรสภาพแวดล้อมของ Services)
-          - POSTGRES_USER=gitea # Set postgres username is gitea (ตั้ง username ว่า gitea)
-          - POSTGRES_PASSWORD=gitea # Set postgres password is gitea (ตั้ง password ว่า gitea)
-          - POSTGRES_DB=gitea # # Set Database name for postgres is gitea (ตั้งชื่อ Database สำหรับ postgres ว่า gitea)
-     restart: always # Set restart service always(ตั้งให้ restart service ตลอดเวลา)
-     volumes: # Declare volumes tag (ประกาศที่จะตั้ง tag ให้ volumes)
-          - db_data:/var/lib/postgresql/data # Create volume tag for db data (สร้าง tag volume สำหรับที่อยู่ db data)
-     expose: # Declare expose (ประกาศการเปิดใช้)
-          - 5432 # expose port 5432 (เปิดใช้ Port 5432)
-     volumes: # Declare to create volumes (ประกาศที่จะสร้าง volumes)
-     db_data: # Create Volumes from db_data tag (สร้าง volume จาก tag db_data )
-     git_data: # Create Volumes from git_data tag (สร้าง volume จาก tag git_data )
-     networks: # Declare Network (ประกาศการใช้ Network)
-     webproxy: # Declare  Network name (ประกาศการใช้ชื่อ Network)
-     external: true # set external network (ตั้งการใช้ network จากภายนอกของ service ที่มีอยู่แล้ว)
+     version: '3.3' 
+     # Declare compose version(ประกาศ compose version)
+     services: 
+     # Declare to create services (ประกาศที่จะสร้าง services)
+      gitea: 
+      # Declare gitea services (ประกาศ gitea services)
+       image: gitea/gitea:latest 
+       # Pull tag of gitea latest version (ดึง tag ของ gitea version ล่าสุด)
+       networks: 
+       # Declare networks for gitea services (ประกาศ networks ที่จะใช้สำหรับ gitea) 
+          - webproxy 
+          # network name webproxy (network ชื่อ webproxy)
+       environment: 
+       # Declare environment (ประกาศตัวแปรสภาพแวดล้อมของ Services)
+          - DB_TYPE=postgres 
+          # Set Database type is postgres (ใช้ Database ชนิดคือ postgres)
+          - DB_HOST=db:5432 
+          # Set Hostname db from db service and port 5432 (ใช้ชื่อ Host ว่า db จาก db service และ ใช้ port 5432)
+          - DB_NAME=gitea 
+          # Set Database name is gitea (ตั้งชื่อ Database ว่า gitea)
+          - DB_USER=gitea 
+          # Set Database username is gitea (ตั้ง username ว่า gitea)
+          - DB_PASSWD=gitea 
+          # Set Database password is gitea (ตั้ง password ว่า gitea)
+          - PORT=3000 
+          # Set gitea use port 3000 (ตั้งให้ gitea ใช้ port 3000)
+       restart: always 
+       # Set restart service always(ตั้งให้ restart service ตลอดเวลา)
+       volumes: 
+       # Declare volumes tag (ประกาศที่จะตั้ง tag ให้ volumes)
+          - /var/run/docker.sock:/var/run/docker.sock 
+          # Create volume tag Docker socket path (สร้าง tag volume สำหรับที่อยู่ Docker socket)
+          - git_data:/data  
+          # Create volume tag for git data (สร้าง tag volume สำหรับที่อยู่ git data)
+       logging: 
+       # Create logging (สร้างการเก็บ log)
+          driver: json-file 
+          # Declare driver for logging type json (ประกาศการเก็บ log แบบ json)
+       deploy: 
+       # Declare deploy (ประกาศ การ Deploy)
+          replicas: 1 
+          # set 1 replicas (ตั้งการทำ deploy แค่ 1 ครั้ง)
+          labels: 
+          # Declare labels to create Reverse Proxy (ประกาศที่จะสร้าง label สำหรับทำ Revers Proxy)
+            - traefik.docker.network=webproxy 
+            # Set network for Traefik (ตั้ง network สำหรับ Traefik)
+            - traefik.enable=true 
+            # Enable Traefik (เปิดใช้ Traefik)
+            - traefik.http.routers.${APPNAME}-https.entrypoints=websecure 
+            # Set Entrypoint (ตั้งการเริ่มต้นประมวลผล)
+            - traefik.http.routers.${APPNAME}-https.rule=Host("${APPNAME}.xops.ipv9.me") 
+            # Set Hostdomain for open gitea website (ตั้ง Hostdomain สำหรับเข้าใช้ gitea website)
+            - traefik.http.services.${APPNAME}.loadbalancer.server.port=3000 
+            # Set port for loadbalance (ตั้ง Port สำหรับทำ loadbalance)
+          resources: 
+          # Declare resources for deploy (ประกาศทรัพยากรสำหรับการ deploy)
+          reservations: 
+          # Declare resources reservations (ประกาศการจองทรัพยากร) 
+               cpus: '0.1' 
+               # Use CPU 1 Core (ใช้ CPU 1 Core)
+               memory: 10M 
+               # Use Memory 10 Megabyte (ใช้หน่วยความจำ 10 Megabyte)
+          limits: 
+          # Declare resources limits (ประกาศการจำกัดทรัพยากร)
+               cpus: '0.4' 
+               # Limit CPU 4 Core (จำกัด CPU 1 Core)
+               memory: 250M 
+               # Limit Memory 250 Megabyte (จำกัดหน่วยความจำ 250 Megabyte)
+      db: 
+      # Declare db services (ประกาศ db services) 
+        image: postgres:alpine 
+        # Pull tag of postgres alpine version (ดึง postgres ของ gitea version alpine) 
+        networks: 
+        # Declare networks for db services (ประกาศ networks ที่จะใช้สำหรับ db) 
+          - webproxy 
+          # network name webproxy (network ชื่อ webproxy)
+        environment: 
+        # Declare environment (ประกาศตัวแปรสภาพแวดล้อมของ Services)
+          - POSTGRES_USER=gitea 
+          # Set postgres username is gitea (ตั้ง username ว่า gitea)
+          - POSTGRES_PASSWORD=gitea 
+          # Set postgres password is gitea (ตั้ง password ว่า gitea)
+          - POSTGRES_DB=gitea 
+          # Set Database name for postgres is gitea (ตั้งชื่อ Database สำหรับ postgres ว่า gitea)
+        restart: always 
+        # Set restart service always(ตั้งให้ restart service ตลอดเวลา)
+        volumes: 
+        # Declare volumes tag (ประกาศที่จะตั้ง tag ให้ volumes)
+          - db_data:/var/lib/postgresql/data 
+          # Create volume tag for db data (สร้าง tag volume สำหรับที่อยู่ db data)
+        expose: 
+        # Declare expose (ประกาศการเปิดใช้)
+          - 5432 
+          # expose port 5432 (เปิดใช้ Port 5432)
+     volumes: 
+     # Declare to create volumes (ประกาศที่จะสร้าง volumes)
+       db_data: 
+       # Create Volumes from db_data tag (สร้าง volume จาก tag db_data )
+       git_data: 
+       # Create Volumes from git_data tag (สร้าง volume จาก tag git_data )
+     networks: 
+     # Declare Network (ประกาศการใช้ Network)
+      webproxy: 
+      # Declare  Network name (ประกาศการใช้ชื่อ Network)
+       external: true 
+       # set external network (ตั้งการใช้ network จากภายนอกของ service ที่มีอยู่แล้ว)
      ```
      </details>
 
@@ -127,8 +180,16 @@ I'll create compose file to command to create service and make reverse proxy.
                (คัดลอก Scripts ภายใน compose.yml file ใส่ทั้งหมดลงใน กล่องข้อความ **Web editor** ตั้งชื่อ Stack และ ตั้ง ค่าตัวแปรสภาพแวดล้อม "APPNAME" หรือ คุณสามารถ แก้ไขมันเองได้ ใน scripts จากนั้น ทำการ deploy)
           ![f](img/addscripts.png)
 
+---
+
+***Thank you For visit my tutorial. Hope it will help you and Sorry for my poor English*** 
+
+***(ขอบคุณสำหรับการเยี่ยมชม tutorial ของผลหวังว่ามันจะช่วยคุณ และ ขออภัยสำหรับความอ่อนของ ภาษาอังกฤษของผลครับ)***
+
+---
+
 ## Result 
-(ผลลัพธ์)
+(ผลลัพธ์) [top⬆️](#gitea-website-use-postgres-db-by-docker-compose-and-reverse-proxy-for-linux-ubuntu-gitea-website-ใช้-postgres-db-โดย-docker-compose-และ-reverse-proxy-สำหรับ-linux-ubuntu)
 
 ---
 1. In Stack menu you can see your stack after deploy  that appear. 
@@ -159,10 +220,15 @@ In my opinion, Inside image they contain Script command to run their website cod
 
 (ในความเห็นผม ภายใน image พวกเขาได้ใส่ Script คำสั่งเพื่อ run เว็ปไซต์ code ของพวกเขาเช่นพวกคำสั่ง NodeJS และ compose file จะดึง image จากพวกเขามาให้เว็ปไซต์ทำงานโดย Image ของพวกเขา และ ทำ Reverse Proxy เพื่อง่ายต่อการเข้า web app โดยไม่ต้อง ประกาศ port ลงบน url และ ตั้งค่า Domain name ให้ตัวเอง)
 
+---
+
+***Thank you For visit my tutorial. Hope it will help you and Sorry for my poor English*** 
+
+***(ขอบคุณสำหรับการเยี่ยมชม tutorial ของผลหวังว่ามันจะช่วยคุณ และ ขออภัยสำหรับความอ่อนของ ภาษาอังกฤษของผลครับ)***
 
 -----
 ### Reference 
-(อ้างอิง)
+(อ้างอิง) [top⬆️](#gitea-website-use-postgres-db-by-docker-compose-and-reverse-proxy-for-linux-ubuntu-gitea-website-ใช้-postgres-db-โดย-docker-compose-และ-reverse-proxy-สำหรับ-linux-ubuntu)
 
 ---
 - Source Repository 
